@@ -1,10 +1,15 @@
 public interface Player {
     void income();
     void foreignAid();
-    void coup();
+    void coup(Player other);
     void tax();
-    void assassinate();
+    void assassinate(Player other);
     void exchange();
-    void steal();
+    void steal(Player other);
     void challenge();
+    int stolenFrom();
+
+    int getCoins();
+
+    void loseCard();
 }

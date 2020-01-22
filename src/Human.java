@@ -1,7 +1,7 @@
 public class Human implements Player {
 
     private int coins;
-
+    private boolean actionStatus;
 
     public void income() {
         coins++;
@@ -15,6 +15,7 @@ public class Human implements Player {
         if (coins >= 7){
             coins -= 7;
             other.loseCard();
+            actionStatus = false;
         } else{
             //TODO: Give player an extra turn.
             System.out.println("You don't have enough money to coup.");
@@ -22,13 +23,16 @@ public class Human implements Player {
     }
 
     public void tax() {
+
         coins += 3;
+        actionStatus = false;
     }
 
     public void assassinate(Player other) {
         if (coins >= 3){
             coins -= 3;
             other.loseCard();
+            actionStatus = false;
         } else{
             //TODO: Give player an extra turn.
             System.out.println("You don't have enough money to assassinate.");
@@ -37,12 +41,13 @@ public class Human implements Player {
     }
 
     public void exchange() {
-
+        actionStatus = false;
     }
 
     public void steal(Player other) {
-        if (other.getCoins() >= 2){
+        if (other.getCoins() > 0){
             coins += other.stolenFrom();
+            actionStatus = false;
         }
     }
 

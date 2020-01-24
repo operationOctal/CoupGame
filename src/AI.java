@@ -11,6 +11,11 @@ public class AI implements Player {
 
     }
 
+    @Override
+    public boolean isAlive() {
+        return false;
+    }
+
     public void income() {
         coins++;
     }

@@ -3,35 +3,45 @@ import java.util.Scanner;
 
 public class Human implements Player {
 
-    private Scanner scanner = new Scanner(System.in);
+    private static ArrayList<Player> playerList = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
     private int coins;
     private boolean actionStatus;
     private String name;
-    private ArrayList<Player>playerList;
+    private int lives;
 
-    public Human (String playerName, ArrayList<Player>playerList){
+    public Human (String playerName){
         this.name = playerName;
-        this.playerList = playerList;
+        this.coins = 2;
+        this.lives = 2;
+        this.playerList.add(this);
+    }
+
+    public static ArrayList<Player> getPlayerList(){
+        return playerList;
+    }
+
+    public boolean isAlive() {
+        return lives != 0;
     }
 
     public void takeTurn() {
         actionStatus = true;
-        System.out.println(name + ", it is your turn");
-        System.out.println("You currently have " + coins + " coins");
+        System.out.println(name + ", it is your turn.");
+        System.out.println("You currently have " + coins + " coins and " + lives + " lives.");
 
-        while (actionStatus) {
-            System.out.println("Which action would you like to take? ");
-            String action = scanner.next();
-            takeAction(action);
-        }
+        takeAction();
     }
 
     public void income() {
         coins++;
+        actionStatus = false;
     }
 
     public void foreignAid() {
         coins += 2;
+        actionStatus = false;
     }
 
     public void coup(Player other) {
@@ -45,7 +55,6 @@ public class Human implements Player {
     }
 
     public void tax() {
-
         coins += 3;
         actionStatus = false;
     }
@@ -69,12 +78,13 @@ public class Human implements Player {
         if (other.getCoins() > 0){
             coins += other.stolenFrom();
             actionStatus = false;
+        } else if (other.getCoins() == 0){
+            System.out.println("Player, " + other.getName() + ", has no coins. Choose another action");
         }
     }
 
 
     public void challenge() {
-
     }
 
     public int getCoins() {
@@ -86,7 +96,12 @@ public class Human implements Player {
     }
 
     public void loseCard() {
-
+        lives--;
+        if (lives == 0){
+            System.out.println(name + " is dead.");
+            playerList.remove(this);
+        }
+        System.out.println(name + " has " + lives + " life.");
     }
 
     public int stolenFrom() {
@@ -101,47 +116,65 @@ public class Human implements Player {
         }
     }
 
-    //TODO: fix this function
     private Player findTarget(){
-        System.out.println("Name a target player: ");
+        //TODO: Default to the other player if it is a 2-player game.
+
+        System.out.print("Name a target player: ");
         String target = scanner.next();
         for (Player player : playerList) {
-            if (player.getName().equals(target)) {
+            if (player.getName().equalsIgnoreCase(target)) {
                 return player;
             }
         }
         System.out.println("Not a valid player. Try again.");
-        return null;
+        return findTarget();
     }
 
 
 
 
-    private void takeAction(String action){
-        switch (action) {
-            case "income":
-                income();
-                break;
-            case "foreign aid":
-                foreignAid();
-            case "coup":
-                coup(findTarget());
-            case "tax":
-                tax();
-                break;
-                //TODO: write these functions
-            case "assassinate":
-                break;
-            case "exchange":
-                break;
-            case "steal":
-                break;
-            default:
-                System.out.println("Not a valid action. Try again.");
-                System.out.println("Which action would you like to take? ");
-                takeAction(scanner.next());
+    private void takeAction(){
+        while (actionStatus) {
+            System.out.print("Which action would you like to take? (Type help for a list of options) ");
+            String action = scanner.next();
 
+            switch (action.toLowerCase()) {
+                case "quit":
+                    System.exit(0);
+                case "help":
+                    System.out.println("Your options are: ");
+                    System.out.println("income, foreign-aid, coup, tax, assassinate, (exchange), steal");
+                    break;
+                case "income":
+                    income();
+                    break;
+                case "foreign-aid":
+                    foreignAid();
+                    break;
+                case "coup":
+                    coup(findTarget());
+                     break;
+                case "tax":
+                    tax();
+                    break;
+                case "assassinate":
+                    assassinate(findTarget());
+                    break;
+                case "exchange":
+                    //TODO
+                    break;
+                case "steal":
+                    steal(findTarget());
+                    break;
+                default:
+                    System.out.println("Not a valid action. Try again.");
+                    System.out.print("Which action would you like to take? ");
+            }
 
         }
+        System.out.println("You now have " + coins + " coins.");
+
+        System.out.println();
+
     }
 }

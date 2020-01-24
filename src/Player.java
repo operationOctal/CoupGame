@@ -4,6 +4,7 @@ public interface Player {
     void takeTurn();
 
     // Character actions
+    boolean isAlive();
     void income();
     void foreignAid();
     void coup(Player other);

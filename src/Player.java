@@ -1,4 +1,9 @@
 public interface Player {
+
+    // General Actions
+    void takeTurn();
+
+    // Character actions
     void income();
     void foreignAid();
     void coup(Player other);
@@ -7,9 +12,13 @@ public interface Player {
     void exchange();
     void steal(Player other);
     void challenge();
+
+    // Reaction actions
     int stolenFrom();
-
-    int getCoins();
-
     void loseCard();
+
+    // Info actions
+    int getCoins();
+    String getName();
+
 }

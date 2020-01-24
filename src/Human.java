@@ -1,7 +1,30 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Human implements Player {
 
+    private Scanner scanner = new Scanner(System.in);
     private int coins;
     private boolean actionStatus;
+    private String name;
+    private ArrayList<Player>playerList;
+
+    public Human (String playerName, ArrayList<Player>playerList){
+        this.name = playerName;
+        this.playerList = playerList;
+    }
+
+    public void takeTurn() {
+        actionStatus = true;
+        System.out.println(name + ", it is your turn");
+        System.out.println("You currently have " + coins + " coins");
+
+        while (actionStatus) {
+            System.out.println("Which action would you like to take? ");
+            String action = scanner.next();
+            takeAction(action);
+        }
+    }
 
     public void income() {
         coins++;
@@ -17,7 +40,6 @@ public class Human implements Player {
             other.loseCard();
             actionStatus = false;
         } else{
-            //TODO: Give player an extra turn.
             System.out.println("You don't have enough money to coup.");
         }
     }
@@ -34,7 +56,6 @@ public class Human implements Player {
             other.loseCard();
             actionStatus = false;
         } else{
-            //TODO: Give player an extra turn.
             System.out.println("You don't have enough money to assassinate.");
         }
 
@@ -51,12 +72,17 @@ public class Human implements Player {
         }
     }
 
+
     public void challenge() {
 
     }
 
     public int getCoins() {
         return coins;
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public void loseCard() {
@@ -72,6 +98,50 @@ public class Human implements Player {
             return 1;
         } else {
             return 0;
+        }
+    }
+
+    //TODO: fix this function
+    private Player findTarget(){
+        System.out.println("Name a target player: ");
+        String target = scanner.next();
+        for (Player player : playerList) {
+            if (player.getName().equals(target)) {
+                return player;
+            }
+        }
+        System.out.println("Not a valid player. Try again.");
+        return null;
+    }
+
+
+
+
+    private void takeAction(String action){
+        switch (action) {
+            case "income":
+                income();
+                break;
+            case "foreign aid":
+                foreignAid();
+            case "coup":
+                coup(findTarget());
+            case "tax":
+                tax();
+                break;
+                //TODO: write these functions
+            case "assassinate":
+                break;
+            case "exchange":
+                break;
+            case "steal":
+                break;
+            default:
+                System.out.println("Not a valid action. Try again.");
+                System.out.println("Which action would you like to take? ");
+                takeAction(scanner.next());
+
+
         }
     }
 }

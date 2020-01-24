@@ -1,6 +1,15 @@
 public class AI implements Player {
     private int coins;
     private boolean actionStatus;
+    private String name;
+
+    public String getName(){
+        return name;
+    }
+
+    public void takeTurn(){
+
+    }
 
     public void income() {
         coins++;

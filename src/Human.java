@@ -122,7 +122,8 @@ public class Human implements Player {
         System.out.print("Name a target player: ");
         String target = scanner.next();
         for (Player player : playerList) {
-            if (player.getName().equalsIgnoreCase(target)) {
+            if (player.getName().equalsIgnoreCase(target) &&
+                player != this) {
                 return player;
             }
         }

@@ -9,12 +9,12 @@ public class Human implements Player {
     private int coins;
     private boolean actionStatus;
     private String name;
-    private int lives;
+    private int influence;
 
     public Human (String playerName){
         this.name = playerName;
         this.coins = 2;
-        this.lives = 2;
+        this.influence = 2;
         this.playerList.add(this);
     }
 
@@ -23,13 +23,13 @@ public class Human implements Player {
     }
 
     public boolean isAlive() {
-        return lives != 0;
+        return influence != 0;
     }
 
     public void takeTurn() {
         actionStatus = true;
         System.out.println(name + ", it is your turn.");
-        System.out.println("You currently have " + coins + " coins and " + lives + " lives.");
+        System.out.println("You currently have " + coins + " coins and " + influence + " influence.");
 
         takeAction();
     }
@@ -47,10 +47,10 @@ public class Human implements Player {
     public void coup(Player other) {
         if (coins >= 7){
             coins -= 7;
-            other.loseCard();
+            other.loseInfluence();
             actionStatus = false;
         } else{
-            System.out.println("You don't have enough money to coup.");
+            System.out.println("You don't have enough coins to coup.");
         }
     }
 
@@ -62,10 +62,10 @@ public class Human implements Player {
     public void assassinate(Player other) {
         if (coins >= 3){
             coins -= 3;
-            other.loseCard();
+            other.loseInfluence();
             actionStatus = false;
         } else{
-            System.out.println("You don't have enough money to assassinate.");
+            System.out.println("You don't have enough coins to assassinate.");
         }
 
     }
@@ -95,13 +95,13 @@ public class Human implements Player {
         return this.name;
     }
 
-    public void loseCard() {
-        lives--;
-        if (lives == 0){
+    public void loseInfluence() {
+        influence--;
+        if (influence == 0){
             System.out.println(name + " is dead.");
             playerList.remove(this);
         }
-        System.out.println(name + " has " + lives + " life.");
+        System.out.println(name + " has " + influence + " influence.");
     }
 
     public int stolenFrom() {
@@ -136,8 +136,15 @@ public class Human implements Player {
 
     private void takeAction(){
         while (actionStatus) {
-            System.out.print("Which action would you like to take? (Type help for a list of options) ");
-            String action = scanner.next();
+            String action;
+            if (coins >= 10){
+                System.out.println("Since you have more than 10 coins, you must coup.");
+                action = "coup";
+            }
+            else{
+                System.out.print("Which action would you like to take? (Type help for a list of options) ");
+                action = scanner.next();
+            }
 
             switch (action.toLowerCase()) {
                 case "quit":

@@ -27,7 +27,7 @@ public class AI implements Player {
     public void coup(Player other) {
         if (coins >= 7){
             coins -= 7;
-            other.loseCard();
+            other.loseInfluence();
             actionStatus = false;
         } else{
             //TODO: Give player an extra turn.
@@ -44,7 +44,7 @@ public class AI implements Player {
     public void assassinate(Player other) {
         if (coins >= 3){
             coins -= 3;
-            other.loseCard();
+            other.loseInfluence();
             actionStatus = false;
         } else{
             //TODO: Give player an extra turn.
@@ -72,7 +72,7 @@ public class AI implements Player {
         return coins;
     }
 
-    public void loseCard() {
+    public void loseInfluence() {
 
     }
 

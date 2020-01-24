@@ -1,6 +1,3 @@
-import com.sun.deploy.panel.AbstractRadioPropertyGroup;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,9 +19,12 @@ public class Game {
 
         while(Human.getPlayerList().size() > 1){
             System.out.println("PLAYERLIST SIZE: " + Human.getPlayerList().size());
+
             for(Player p : Human.getPlayerList()){
-                System.out.println("CURRENT PLAYER: " + p.getName());
-                p.takeTurn();
+                if (Human.getPlayerList().contains(p)){
+                    System.out.println("CURRENT PLAYER: " + p.getName());
+                    p.takeTurn();
+                }
             }
         }
 

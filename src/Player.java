@@ -16,7 +16,7 @@ public interface Player {
 
     // Reaction actions
     int stolenFrom();
-    void loseCard();
+    void loseInfluence();
 
     // Info actions
     int getCoins();
